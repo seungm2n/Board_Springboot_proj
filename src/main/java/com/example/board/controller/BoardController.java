@@ -27,7 +27,7 @@ public class BoardController {
 
         // id에 해당하는 게시물을 읽어옴
         // id에 해당하는 게시물의 조회수도 1 증가
-        
+
         return "board";
     }
 
