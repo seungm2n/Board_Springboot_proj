@@ -14,6 +14,14 @@ public class UserController {
         return "userRegForm";
     }
 
+    /**
+     * 회원 정보를 등록함.
+     *
+     * @param name
+     * @param email
+     * @param password
+     * @return
+     */
     @PostMapping("/userReg")
     public String UserReg(
             @RequestParam("name") String name,
@@ -23,9 +31,9 @@ public class UserController {
         System.out.println("name : " + name);
         System.out.println("email : " + email);
         System.out.println("password : " + password);
-        
+
         // 회원 정보를 저장
-        
+
         return "redirect:/welcome"; // 브라우저에게 자동으로 http://localhost:8080/welcome으로 이동
     }
 
