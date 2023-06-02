@@ -50,7 +50,7 @@ public class BoardDao {
         int start = (page - 1) * 10;
         String sql = "SELECT u.user_id, b.board_id, b.title, b.regdate, b.view_cnt, u.name FROM board b, USER u WHERE b.user_id = u.user_id ORDER BY regdate DESC LIMIT :start,10";
         RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
-        List<Board> list = jdbcTemplate.query(sql, Map.of("start",start), rowMapper);
+        List<Board> list = jdbcTemplate.query(sql, Map.of("start", start), rowMapper);
         return list;
     }
 
@@ -58,7 +58,7 @@ public class BoardDao {
     public Board getBoard(int boardId) {
         String sql = "SELECT u.user_id, b.board_id, b.title, b.regdate, b.view_cnt, u.name, b.content FROM board b, USER u WHERE b.user_id = u.user_id AND b.board_id = :boardId";
         RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
-        Board board = jdbcTemplate.queryForObject(sql, Map.of("boardId",boardId), rowMapper);
+        Board board = jdbcTemplate.queryForObject(sql, Map.of("boardId", boardId), rowMapper);
         return board;
     }
 
@@ -73,5 +73,19 @@ public class BoardDao {
     public void deleteBoard(int boardId) {
         String sql = "delete from board where board_id = :boardId";
         jdbcTemplate.update(sql, Map.of("boardId", boardId));
+    }
+
+    @Transactional
+    public void updateBoard(int boardId, String title, String content) {
+        String sql = "update board set title = :title, content= :content where board_id = :boardId";
+
+        Board board = new Board();
+
+        board.setBoardId(boardId);
+        board.setTitle(title);
+        board.setContent(content);
+
+        SqlParameterSource params = new BeanPropertySqlParameterSource(board);
+        jdbcTemplate.update(sql, params);
     }
 }

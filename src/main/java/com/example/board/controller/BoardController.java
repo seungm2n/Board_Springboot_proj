@@ -106,7 +106,47 @@ public class BoardController {
             return "redirect:/loginform";
         }
         // 작성자와 로그인한 사용자 ID가 같은가?
+        List<String> roles = loginInfo.getRoles();
+        if(roles.contains("ROLE_ADMIN")) {
+            boardService.deleteBoard(boardId);
+        } else {
         boardService.deleteBoard(loginInfo.getUserId(), boardId);
+        }
         return "redirect:/";
+    }
+
+    @GetMapping("/updateform")
+    public String updateform(@RequestParam("boardId") int boardId, Model m, HttpSession session) {
+        LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
+        if(loginInfo == null) { // 세션에 로그인 정보가 없으면 로그인폼으로 redirect함.
+            return "redirect:/loginform";
+        }
+        // boardId에 해당하는 정보를 읽어와서 updateform에 전달함
+        Board board = boardService.getBoard(boardId, false);
+        m.addAttribute("board", board);
+        m.addAttribute("loginInfo", loginInfo);
+
+        return "updateform";
+    }
+
+    @PostMapping("/update")
+    public String update(@RequestParam("boardId") int boardId,
+                         @RequestParam("title") String title,
+                         @RequestParam("content") String content,
+                         HttpSession session
+                         ){
+        LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
+        if(loginInfo == null) { // 세션에 로그인 정보가 없으면 로그인폼으로 redirect함.
+            return "redirect:/loginform";
+        }
+        // boardId에 해당하는 글의 제목과 내용을 수정.
+        // 단, 글쓴이만.
+        Board board = boardService.getBoard(boardId, false);
+        if (board.getUserId() != loginInfo.getUserId()) {
+            return "redirect:/board?boardId="+boardId;
+        }
+
+        boardService.updateBoard(boardId, title, content);
+        return "redirect:/board?boardId="+boardId;
     }
 }

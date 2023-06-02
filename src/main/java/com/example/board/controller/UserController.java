@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -73,6 +74,11 @@ public class UserController {
             if(user.getPassword().equals(password)) {
                 System.out.println("암호가 같습니다.");
                 LoginInfo loginInfo = new LoginInfo(user.getUserId(), user.getEmail(), user.getName());
+
+                // 권한정보를 읽어와서 loginInfo에 추가한다
+                List<String> roles = userService.getRoles(user.getUserId());
+                loginInfo.setRoles(roles);
+
                 session.setAttribute("loginInfo", loginInfo);
                 System.out.println("세션에 로그인 정보 저장");
             } else {
