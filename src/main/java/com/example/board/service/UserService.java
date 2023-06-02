@@ -20,6 +20,11 @@ public class UserService {
     public User addUser(String email, String name, String password) {
 
         // 트랜잭션이 시작됨
+        User user1 = userDao.getUser(email); // 이메일 중복 검사
+        if (user1 != null) {
+            throw new RuntimeException("이미 가입된 이메일 입니다.");
+        }
+
         User user = userDao.addUser(email, name, password);
         System.out.println("addUser : " + user);
         userDao.mappingUserRole(user.getUserId()); // 권한 부여

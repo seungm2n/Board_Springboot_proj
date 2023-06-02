@@ -53,4 +53,25 @@ public class BoardDao {
         List<Board> list = jdbcTemplate.query(sql, Map.of("start",start), rowMapper);
         return list;
     }
+
+    @Transactional(readOnly = true)
+    public Board getBoard(int boardId) {
+        String sql = "SELECT u.user_id, b.board_id, b.title, b.regdate, b.view_cnt, u.name, b.content FROM board b, USER u WHERE b.user_id = u.user_id AND b.board_id = :boardId";
+        RowMapper<Board> rowMapper = BeanPropertyRowMapper.newInstance(Board.class);
+        Board board = jdbcTemplate.queryForObject(sql, Map.of("boardId",boardId), rowMapper);
+        return board;
+    }
+
+    @Transactional
+    public void updateViewCnt(int boardId) {
+        String sql = "UPDATE board SET view_cnt = VIEW_cnt + 1 WHERE board_id = :boardId";
+        jdbcTemplate.update(sql, Map.of("boardId", boardId));
+
+    }
+
+    @Transactional
+    public void deleteBoard(int boardId) {
+        String sql = "delete from board where board_id = :boardId";
+        jdbcTemplate.update(sql, Map.of("boardId", boardId));
+    }
 }

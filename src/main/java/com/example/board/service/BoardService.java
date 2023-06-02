@@ -26,4 +26,22 @@ public class BoardService {
     public List<Board> getBoards(int page) {
         return boardDao.getBoards(page);
     }
+
+    @Transactional
+    public Board getBoard(int boardId) {
+        // id에 해당하는 게시물을 읽어옴
+        // id에 해당하는 게시물의 조회수도 1 증가
+        Board board = boardDao.getBoard(boardId);
+        boardDao.updateViewCnt(boardId);
+
+        return board;
+    }
+
+    @Transactional
+    public void deleteBoard(int userId, int boardId) {
+        Board board = boardDao.getBoard(boardId);
+        if (board.getUserId() == userId) {
+            boardDao.deleteBoard(boardId);
+        }
+    }
 }
