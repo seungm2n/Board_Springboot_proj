@@ -61,7 +61,6 @@ public class BoardController {
 
     // 삭제. 관리자는 모든 글 삭제 가능
     // 수정.
-
     @GetMapping("/writeForm")
     public String writeForm(HttpSession session, Model m) {
         // 로그인한 사용자만 글을 쓸 수 있음.

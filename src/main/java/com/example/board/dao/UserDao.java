@@ -52,10 +52,6 @@ public class UserDao {
         return user;
     }
 
-//    public int getLastInsertId() {
-//        return 0;
-//    }
-
     public void mappingUserRole(int userId) {
         // Service에서 이미 트랜잭션이 시작했기 때문에, 그 트랜잭션에 포함.
         String sql = "insert into user_role(user_id, role_id) values (:userId, 1)";
