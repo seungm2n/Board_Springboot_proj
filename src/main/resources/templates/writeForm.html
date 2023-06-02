@@ -7,7 +7,7 @@
 <body>
 <h1>글쓰기</h1>
 <form action="/write" method="post">
-    이름 : 세션에서 읽어드린 이름 <br/>
+    이름 : <span th:text="${loginInfo.name}" /> <br/>
     제목 : <input type="text" name="title"/><br/>
     내용 : <br>
     <textarea name="content" cols="50" row="5"></textarea><br>
