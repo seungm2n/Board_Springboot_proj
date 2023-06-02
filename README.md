@@ -21,10 +21,10 @@
 2. 로그인(HttpSession) - /loginform
 3. 글쓰기 - /writeform, /write
 4. 글 목록보기 (pagination) - /
-5. 글 상세보기
-6. 글 수정하기
-7. 글 삭제하기
-8. 로그아웃
+5. 글 상세보기 - /board?boardId={board_id}
+6. 글 수정하기 - /update
+7. 글 삭제하기 - /delete
+8. 로그아웃 - /logout
 9. 관리자 - 어떤 사용자의 글이든 모두 삭제 가능
 
 ## 게시판 만드는 순서
