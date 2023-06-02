@@ -21,9 +21,14 @@ public class UserService {
 
         // 트랜잭션이 시작됨
         User user = userDao.addUser(email, name, password);
-        System.out.println("service + " + user);
+        System.out.println("addUser : " + user);
         userDao.mappingUserRole(user.getUserId()); // 권한 부여
 
         return user;
+    }
+
+    @Transactional
+    public User getUser(String email) {
+        return userDao.getUser(email);
     }
 }

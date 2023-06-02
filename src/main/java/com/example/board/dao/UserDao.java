@@ -1,6 +1,8 @@
 package com.example.board.dao;
 
 import com.example.board.dto.User;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -58,4 +60,15 @@ public class UserDao {
         SqlParameterSource params = new MapSqlParameterSource("userId", userId);
         jdbcTemplate.update(sql, params);
     }
+
+    @Transactional
+    public User getUser(String email) {
+        // user_id => setUserId, email => setEmail ...
+        String sql = "select user_id, email, name, password, regdate from user where email = :email";
+        SqlParameterSource params = new MapSqlParameterSource("email", email);
+        RowMapper<User> rowMapper = BeanPropertyRowMapper.newInstance(User.class);
+        User user = jdbcTemplate.queryForObject(sql, params, rowMapper);
+        return user;
+    }
+
 }

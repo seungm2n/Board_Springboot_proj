@@ -1,9 +1,14 @@
 package com.example.board.controller;
 
+import com.example.board.dto.LoginInfo;
+import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import javax.servlet.http.HttpSession;
 
 // HTTP요청을 받아 응답하는 컴포넌트. 스프링부트가 자동으로 Bean 생성함
 @Controller
@@ -14,8 +19,11 @@ public class BoardController {
     // list를 리턴한다는 것은
     // classpath:/templates/list.html
     @GetMapping("/")
-    public String list() {
+    public String list(HttpSession session, Model model) {
         // 게시물 목록 읽어오고, 페이징 처리
+        LoginInfo loginInfo = (LoginInfo) session.getAttribute("loginInfo");
+        model.addAttribute("loginInfo",loginInfo); // 템플릿에게
+
         return "list";
     }
 
